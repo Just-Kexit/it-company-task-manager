@@ -30,13 +30,17 @@ class Task(models.Model):
 
     def __str__(self):
         return (
-            f"{self.name} deadline: {self.deadline}, "
+            f"'{self.name}' - deadline: {self.deadline.strftime("%d.%m.%Y %H:%M")}, "
             f"is completed: {self.is_completed}, "
             f"priority: {self.priority}."
         )
 
 
 class Worker(AbstractUser):
+    class Meta:
+        verbose_name = "worker"
+        verbose_name_plural = "workers"
+
     position = models.ForeignKey(
         "Position",
         on_delete=models.CASCADE,
@@ -51,3 +55,6 @@ class Worker(AbstractUser):
 
 class Position(models.Model):
     name = models.CharField(max_length=255, unique=True)
+
+    def __str__(self):
+        return self.name
