@@ -110,6 +110,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
+AUTH_USER_MODEL = "task_manager.Worker"
+
 TIME_ZONE = "UTC"
 
 USE_I18N = True
