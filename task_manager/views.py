@@ -20,3 +20,10 @@ def index(request):
 
 class WorkerListView(generic.ListView):
     model = Worker
+
+
+class TaskListView(generic.ListView):
+    model = Task
+    queryset = Task.objects.select_related(
+        "task_type"
+    ).prefetch_related("assignees")

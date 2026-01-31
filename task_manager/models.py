@@ -35,6 +35,8 @@ class Task(models.Model):
             f"priority: {self.priority}."
         )
 
+    def get_status_display(self):
+        return "Completed" if self.is_completed else "Not completed"
 
 class Worker(AbstractUser):
     class Meta:
