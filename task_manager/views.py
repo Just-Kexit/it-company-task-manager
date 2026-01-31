@@ -27,3 +27,9 @@ class TaskListView(generic.ListView):
     queryset = Task.objects.select_related(
         "task_type"
     ).prefetch_related("assignees")
+
+
+class TaskTypeListView(generic.ListView):
+    model = TaskType
+    template_name = "task_manager/task_type_list.html"
+    context_object_name = "task_type_list"
