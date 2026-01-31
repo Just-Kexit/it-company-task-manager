@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Manager Task</h1>
+    <p>Go, go work power rangers!</p>
+    <h2>Info for you</h2>
+    <p>Our Global Progress:</p>
+    <ul>
+        <li><strong>Total Worker:</strong> {{ num_workers }}</li>
+        <li><strong>Tasks Completed:</strong> {{ num_task_completed }} out of {{ num_task }}.</li>
+    </ul>
+{% endblock %}
