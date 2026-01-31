@@ -1,6 +1,7 @@
 from django.shortcuts import render
+from django.views import generic
 
-from task_manager.models import Worker, Task
+from task_manager.models import Worker, Task, TaskType, Position
 
 
 def index(request):
@@ -15,3 +16,7 @@ def index(request):
         "num_task_completed": num_task_completed,
     }
     return render(request, "task_manager/index.html", context=context)
+
+
+class WorkerListView(generic.ListView):
+    model = Worker
