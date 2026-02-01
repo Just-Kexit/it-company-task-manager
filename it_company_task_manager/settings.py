@@ -112,6 +112,8 @@ LANGUAGE_CODE = "en-us"
 
 AUTH_USER_MODEL = "task_manager.Worker"
 
+LOGIN_REDIRECT_URL = "/"
+
 TIME_ZONE = "UTC"
 
 USE_I18N = True
