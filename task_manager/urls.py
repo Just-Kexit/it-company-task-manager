@@ -1,6 +1,5 @@
 from django.urls import path
 
-from .models import Position
 from .views import (
     index,
     WorkerListView,

@@ -9,7 +9,7 @@ def index(request):
 
     num_workers = Worker.objects.count()
     num_task = Task.objects.count()
-    num_task_completed =  Task.objects.filter(is_completed=True).count()
+    num_task_completed = Task.objects.filter(is_completed=True).count()
 
     context = {
         "num_workers": num_workers,

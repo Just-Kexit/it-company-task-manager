@@ -25,18 +25,24 @@ class Task(models.Model):
         choices=LevelPriority.choices,
         default=LevelPriority.LOW
     )
-    task_type = models.ForeignKey("TaskType", on_delete=models.CASCADE, related_name="tasks")
+    task_type = models.ForeignKey(
+        "TaskType",
+        on_delete=models.CASCADE,
+        related_name="tasks"
+    )
     assignees = models.ManyToManyField("Worker", related_name="assigned_tasks")
 
     def __str__(self):
         return (
-            f"'{self.name}' - deadline: {self.deadline.strftime("%d.%m.%Y %H:%M")}, "
+            f"'{self.name}' - deadline: "
+            f"{self.deadline.strftime("%d.%m.%Y %H:%M")}, "
             f"is completed: {self.is_completed}, "
             f"priority: {self.priority}."
         )
 
     def get_status_display(self):
         return "Completed" if self.is_completed else "Not completed"
+
 
 class Worker(AbstractUser):
     class Meta:
