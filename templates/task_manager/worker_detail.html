@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>
+    {{ worker.username }}
+  </h1>
+  <hr>
+  <p><strong>Position:</strong> {{ worker.position }}</p>
+  <p><strong>First name:</strong> {{ worker.first_name }}</p>
+  <p><strong>Last name:</strong> {{ worker.last_name }}</p>
+
+    <h4>Task</h4>
+      {% if worker.assigned_tasks.all %}
+        <table class="table">
+          <tr>
+            <th>NAME</th>
+            <th>IS COMPLETED</th>
+            <th>DEADLINE</th>
+          </tr>
+          {% for task in worker.assigned_tasks.all %}
+          <tr>
+            <td>{{ task.name }}</td>
+            <td>{{ task.get_status_display }}</td>
+            <td>{{ task.deadline }}</td>
+          </tr>
+          {% endfor %}
+        </table>
+
+      {% else %}
+        <p>The employee doesn’t have a task assigned yet.</p>
+      {% endif %}
+
+{% endblock %}

@@ -23,6 +23,11 @@ class WorkerListView(LoginRequiredMixin, generic.ListView):
     model = Worker
 
 
+class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
+    model = Worker
+    queryset = Worker.objects.all().select_related("position").prefetch_related("assigned_tasks")
+
+
 class TaskListView(LoginRequiredMixin, generic.ListView):
     model = Task
     queryset = Task.objects.select_related(
