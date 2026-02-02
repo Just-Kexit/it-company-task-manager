@@ -1,10 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>
+    {{ task.name }} is {{ task.get_status_display }}
+  </h1>
+  <hr>
+  <p><strong>Type:</strong> {{ task.task_type }}</p>
+  <p><strong>Deadline:</strong> {{ task.deadline }}</p>
+  <p><strong>Priority:</strong> {{ task.get_priority_display }}</p>
+  <p><strong>Description:</strong><br>{{ task.description }}</p>
+
+  <h4>Workers assigned to the task</h4>
+  {% if task.assignees.all %}
+    <table class="table">
+    <tr>
+      <th>Username</th>
+      <th>First name</th>
+      <th>Last name</th>
+      <th>Position</th>
+    </tr>
+    {% for worker in task.assignees.all %}
+      <tr>
+        <td><a href="{% url 'task-manager:worker-detail' pk=worker.id %}">{{ worker.username }}</a></td>
+        <td>{{ worker.first_name }}</td>
+        <td>{{ worker.last_name }}</td>
+        <td>{{ worker.position }}</td>
+      </tr>
+    </table>
+    {% endfor %}
+
+  {% else %}
+    <p>No one has taken this task yet.</p>
+  {% endif %}
+
+{% endblock %}

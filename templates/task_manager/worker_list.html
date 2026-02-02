@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>
-      Our Beloved Staff
-    </h1>
-    {% if worker_list %}
+  <h1>
+    Our Beloved Staff
+  </h1>
+  {% if worker_list %}
     <table class="table">
       <tr>
         <th>ID</th>
@@ -13,18 +13,18 @@
         <th>Last name</th>
         <th>Position</th>
       </tr>
-    {% for worker in worker_list %}
-      <tr>
-        <td>{{ worker.id }}</td>
-        <td><a href="{% url 'task-manager:worker-detail' pk=worker.id %}">{{ worker.username }}</a></td>
-        <td>{{ worker.first_name }}</td>
-        <td>{{ worker.last_name }}</td>
-        <td>{{ worker.position }}</td>
-      </tr>
-    {% endfor %}
+      {% for worker in worker_list %}
+        <tr>
+          <td>{{ worker.id }}</td>
+          <td><a href="{% url 'task-manager:worker-detail' pk=worker.id %}">{{ worker.username }}</a></td>
+          <td>{{ worker.first_name }}</td>
+          <td>{{ worker.last_name }}</td>
+          <td>{{ worker.position }}</td>
+        </tr>
+      {% endfor %}
 
     </table>
-    {% else %}
-      <p>No stars shining yet.</p>
-    {% endif %}
+  {% else %}
+    <p>No stars shining yet.</p>
+  {% endif %}
 {% endblock %}
