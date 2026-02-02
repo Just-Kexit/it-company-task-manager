@@ -3,6 +3,9 @@
 {% block content %}
   <h1>
     Our Beloved Staff
+    <a href="{% url 'task-manager:worker-create' %}" class="btn btn-primary link-to-page">
+        Create
+    </a>
   </h1>
   {% if worker_list %}
     <table class="table">

@@ -2,6 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.views import generic
 
+from task_manager.forms import WorkerCreationForm
 from task_manager.models import Worker, Task, TaskType, Position
 
 
@@ -29,6 +30,9 @@ class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
     queryset = Worker.objects.all().select_related("position").prefetch_related("assigned_tasks")
 
 
+class WorkerCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Worker
+    form_class = WorkerCreationForm
 class TaskListView(LoginRequiredMixin, generic.ListView):
     paginate_by = 2
     model = Task
