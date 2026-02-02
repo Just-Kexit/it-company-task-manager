@@ -20,6 +20,7 @@ def index(request):
 
 
 class WorkerListView(LoginRequiredMixin, generic.ListView):
+    paginate_by = 2
     model = Worker
 
 
@@ -29,6 +30,7 @@ class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
 
 
 class TaskListView(LoginRequiredMixin, generic.ListView):
+    paginate_by = 2
     model = Task
     queryset = Task.objects.select_related(
         "task_type"
