@@ -6,7 +6,13 @@
     <h2>Info for you</h2>
     <p>Our Global Progress:</p>
     <ul>
-        <li><strong>Total Worker:</strong> {{ num_workers }}</li>
-        <li><strong>Tasks Completed:</strong> {{ num_task_completed }} out of {{ num_task }}.</li>
+      <li><strong>Total Worker:</strong> {{ num_workers }}</li>
+      <li><strong>Tasks Completed:</strong> {{ num_task_completed }} out of {{ num_task }}.</li>
+    </ul>
+    <p>The deadline has passed:</p>
+    <ul>
+      {% for task in deadline_over %}
+      <li><a href="{% url 'task_manager:task-detail' pk=task.id %}">{{ task.name }}</a></li>
+      {% endfor %}
     </ul>
 {% endblock %}
