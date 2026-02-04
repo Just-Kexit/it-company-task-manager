@@ -68,8 +68,14 @@ class TaskTypeCreateView(LoginRequiredMixin, generic.CreateView):
     model = TaskType
     fields = "__all__"
     template_name =  "task_manager/task_type_form.html"
-    success_url = reverse_lazy("taxi:manufacturer-list")
+    success_url = reverse_lazy("task-manager:task-type-list")
 
 
 class PositionListView(LoginRequiredMixin, generic.ListView):
     model = Position
+
+
+class PositionCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Position
+    fields = "__all__"
+    success_url = reverse_lazy("task-manager:position-list")
