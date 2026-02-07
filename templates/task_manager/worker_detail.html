@@ -5,7 +5,10 @@
     {{ worker.username }}
   </h1>
   <hr>
-  <p><strong>Position:</strong> {{ worker.position }}</p>
+  <p>
+    <strong>Position:</strong> {{ worker.position }}
+    <a href="{% url 'task-manager:worker-update' pk=worker.id %}" class="btn btn-primary">Change</a>
+  </p>
   <p><strong>First name:</strong> {{ worker.first_name }}</p>
   <p><strong>Last name:</strong> {{ worker.last_name }}</p>
 
