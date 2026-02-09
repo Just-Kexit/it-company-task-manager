@@ -21,7 +21,7 @@ class WorkerPositionUpdateForm(forms.ModelForm):
         fields = ["position"]
 
 
-class TaskCreationForm(forms.ModelForm):
+class TaskForm(forms.ModelForm):
     assignees = forms.ModelMultipleChoiceField(
         queryset=get_user_model().objects.all(),
         widget=forms.CheckboxSelectMultiple,
@@ -37,3 +37,9 @@ class TaskCreationForm(forms.ModelForm):
     class Meta:
         model = Task
         exclude = ("is_completed", )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        if self.instance and self.instance.pk:
+            self.fields["is_completed"] = forms.BooleanField(required=False)
