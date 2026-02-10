@@ -43,3 +43,29 @@ class TaskForm(forms.ModelForm):
 
         if self.instance and self.instance.pk:
             self.fields["is_completed"] = forms.BooleanField(required=False)
+
+
+class WorkerSearchUsernameForm(forms.Form):
+    username = forms.CharField(
+        max_length=255,
+        required=False,
+        label="",
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "Search by username"
+            }
+        )
+    )
+
+
+class TaskSearchNameForm(forms.Form):
+    name = forms.CharField(
+        max_length=255,
+        required=False,
+        label="",
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "Search by name"
+            }
+        )
+    )
