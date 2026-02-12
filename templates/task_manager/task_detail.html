@@ -12,7 +12,19 @@
   <p><strong>Priority:</strong> {{ task.get_priority_display }}</p>
   <p><strong>Description:</strong><br>{{ task.description }}</p>
 
-  <h4>Workers assigned to the task</h4>
+  <h4>
+    Workers assigned to the task
+    {% if task in user.assigned_tasks.all %}
+      <a href="{% url 'task_manager:toggle-task-assign' pk=task.id %}" class="btn btn-danger link-to-page">
+        Delete me from this task
+      </a>
+    {% else %}
+      <a href="{% url 'task_manager:toggle-task-assign' pk=task.id %}" class="btn btn-success link-to-page">
+        Assign me from this task
+      </a>
+    {% endif %}
+  </h4>
+  <br>
   {% if task.assignees.all %}
     <table class="table">
     <tr>

@@ -19,7 +19,8 @@ from .views import (
     TaskTypeUpdateView,
     TaskTypeDeleteView,
     PositionUpdateView,
-    PositionDeleteView
+    PositionDeleteView,
+    toggle_assign_to_task
 )
 
 
@@ -43,6 +44,7 @@ urlpatterns = [
     path("positions/create/", PositionCreateView.as_view(), name="position-create"),
     path("positions/update/<int:pk>/", PositionUpdateView.as_view(), name="position-update"),
     path("positions/delete/<int:pk>", PositionDeleteView.as_view(), name="position-delete"),
+    path("positions/toggle_assing/<int:pk>", toggle_assign_to_task, name="toggle-task-assign"),
 ]
 
 app_name = "task_manager"

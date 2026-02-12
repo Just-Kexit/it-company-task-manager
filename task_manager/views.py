@@ -3,6 +3,7 @@ import datetime
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
@@ -176,3 +177,15 @@ class PositionUpdateView(LoginRequiredMixin, generic.UpdateView):
 class PositionDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Position
     success_url = reverse_lazy("task-manager:position-list")
+
+
+@login_required
+def toggle_assign_to_task(request, pk):
+    worker = Worker.objects.get(id=request.user.id)
+    if (
+        Task.objects.get(id=pk) in worker.assigned_tasks.all()
+    ):
+        worker.assigned_tasks.remove(pk)
+    else:
+        worker.assigned_tasks.add(pk)
+    return HttpResponseRedirect(reverse_lazy("task-manager:task-detail", args=[pk]))
