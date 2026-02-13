@@ -26,7 +26,6 @@ class LoginMixin:
         )
         self.client.force_login(self.worker)
 
-
 class LogoutIndexPageTests(TestCase):
 
     def test_login_required(self):
@@ -243,266 +242,301 @@ class LoginTaskTypeCDUTest(LoginMixin, TestCase):
         self.assertEqual(Position.objects.count(), 0)
         self.assertRedirects(response, TASK_TYPE_URL)
 
-#
-# class LogoutCarListTest(TestCase):
-#
-#     def test_login_required(self):
-#         login_url = settings.LOGIN_URL
-#         response = self.client.get(CAR_URL)
-#         self.assertRedirects(response, f"{login_url}?next={CAR_URL}")
-#
-#
-# class LoginCarListTest(LoginMixin, TestCase):
-#     def setUp(self):
-#         super().setUp()
-#
-#         self.manufacturer = Manufacturer.objects.create(
-#             name="Toyota",
-#             country="DU"
-#         )
-#
-#         number_of_car = 7
-#         for car_id in range(number_of_car):
-#             Car.objects.create(
-#                 model=f"Test - {car_id}",
-#                 manufacturer=self.manufacturer,
-#             )
-#
-#     def test_login_car_list_and_pagination(self):
-#         response = self.client.get(CAR_URL)
-#
-#         self.assertEqual(response.status_code, 200)
-#
-#         self.assertTemplateUsed(response, "taxi/car_list.html")
-#
-#         self.assertTrue("is_paginated" in response.context)
-#         self.assertTrue(response.context["is_paginated"])
-#         self.assertEqual(len(response.context["car_list"]), 5)
-#
-#         response2 = self.client.get(CAR_URL + "?page=2")
-#         self.assertEqual(len(response2.context["car_list"]), 2)
-#
-#     def test_car_get_context_with_search_form(self):
-#         response = self.client.get(CAR_URL + "?model=BMW")
-#
-#         self.assertIn("search_form", response.context)
-#
-#         form = response.context["search_form"]
-#         self.assertEqual(form.initial["model"], "BMW")
-#
-#     def test_car_get_queryset_filter(self):
-#
-#         Car.objects.create(model="Toyota", manufacturer=self.manufacturer)
-#
-#         response = self.client.get(CAR_URL + "?model=Toy")
-#         qs = response.context["car_list"]
-#         models = [c.model for c in qs]
-#
-#         self.assertEqual(len(qs), 1)
-#         self.assertIn("Toyota", models)
-#
-#     def test_toggle_assign_to_car(self):
-#
-#         driver = Driver.objects.get(pk=self.driver.id)
-#         car = Car.objects.get(model="Test - 0")
-#
-#         self.assertNotIn(car, driver.cars.all())
-#         response = self.client.post(
-#             reverse("taxi:toggle-car-assign", args=[car.id])
-#         )
-#
-#         driver.refresh_from_db()
-#         self.assertIn(car, driver.cars.all())
-#         self.assertRedirects(
-#             response,
-#             reverse("taxi:car-detail", args=[car.id])
-#         )
-#
-#
-# class LogoutCarCDUTest(TestCase):
-#     def test_login_required(self):
-#         login_url = settings.LOGIN_URL
-#         response = self.client.get(reverse("taxi:car-create"))
-#         self.assertRedirects(
-#             response,
-#             f"{login_url}?next={reverse('taxi:car-create')}"
-#         )
-#
-#
-# class LoginCarCDUTest(LoginMixin, TestCase):
-#     def setUp(self):
-#         super().setUp()
-#
-#         self.manufacturer = Manufacturer.objects.create(
-#             name="BMW",
-#             country="DL"
-#         )
-#
-#     def test_car_create(self):
-#
-#         create_url = reverse("taxi:car-create")
-#
-#         data = {
-#             "model": "BMW",
-#             "manufacturer": self.manufacturer.id,
-#             "drivers": self.driver.id
-#         }
-#
-#         response = self.client.post(create_url, data=data)
-#         self.assertRedirects(response, CAR_URL)
-#
-#         car = Car.objects.get(model="BMW")
-#         self.assertEqual(car.manufacturer.country, "DL")
-#
-#     def test_car_update(self):
-#
-#         car = Car.objects.create(
-#             model="BMW", manufacturer=self.manufacturer
-#         )
-#
-#         data = {
-#             "model": "NewBMW",
-#             "manufacturer": self.manufacturer.id,
-#             "drivers": self.driver.id
-#         }
-#
-#         update_url = reverse(
-#             "taxi:car-update",
-#             args=[car.id]
-#         )
-#         response = self.client.post(update_url, data=data)
-#
-#         car.refresh_from_db()
-#         self.assertEqual(car.model, "NewBMW")
-#         self.assertRedirects(response, CAR_URL)
-#
-#     def test_car_delete(self):
-#         car = Car.objects.create(
-#             model="DeleteMe", manufacturer=self.manufacturer
-#         )
-#         delete_url = reverse("taxi:car-delete", args=[car.id])
-#         response = self.client.post(delete_url)
-#
-#         self.assertEqual(Car.objects.count(), 0)
-#         self.assertRedirects(response, CAR_URL)
-#
-#
-# class LogoutDriverListTest(TestCase):
-#     def test_login_required(self):
-#         login_url = settings.LOGIN_URL
-#         response = self.client.get(reverse("taxi:driver-list"))
-#         self.assertRedirects(
-#             response,
-#             f"{login_url}?next={reverse('taxi:driver-list')}"
-#         )
-#
-#
-# class LoginDriverListTest(LoginMixin, TestCase):
-#
-#     def setUp(self):
-#         super().setUp()
-#
-#         for i in range(7):
-#             Driver.objects.create_user(
-#                 username=f"user{i}",
-#                 password="12345test",
-#                 license_number=f"ABG1111{i}"
-#             )
-#
-#     def test_login_driver_list_and_pagination(self):
-#         response = self.client.get(DRIVER_URL)
-#
-#         self.assertEqual(response.status_code, 200)
-#         self.assertTemplateUsed(response, "taxi/driver_list.html")
-#
-#         self.assertTrue(response.context["is_paginated"])
-#         self.assertEqual(len(response.context["driver_list"]), 5)
-#
-#         response2 = self.client.get(DRIVER_URL + "?page=2")
-#         self.assertEqual(len(response2.context["driver_list"]), 3)
-#
-#     def test_driver_get_context_with_search_form(self):
-#         response = self.client.get(DRIVER_URL + "?username=adm")
-#
-#         self.assertIn("search_form", response.context)
-#         form = response.context["search_form"]
-#         self.assertEqual(form.initial["username"], "adm")
-#
-#     def test_driver_get_queryset_filter(self):
-#
-#         response = self.client.get(DRIVER_URL + "?username=user1")
-#         qs = response.context["driver_list"]
-#
-#         usernames = [d.username for d in qs]
-#
-#         self.assertEqual(len(qs), 1)
-#         self.assertIn("user1", usernames)
-#
-#
-# class LogoutDriverCDUTest(TestCase):
-#     def test_login_required(self):
-#         login_url = settings.LOGIN_URL
-#         url = reverse("taxi:driver-create")
-#
-#         response = self.client.get(url)
-#
-#         self.assertRedirects(
-#             response,
-#             f"{login_url}?next={url}"
-#         )
-#
-#
-# class LoginDriverCDUTest(LoginMixin, TestCase):
-#
-#     def test_driver_create(self):
-#         url = reverse("taxi:driver-create")
-#
-#         data = {
-#             "username": "newuser",
-#             "password1": "StrongPass123!",
-#             "password2": "StrongPass123!",
-#             "license_number": "AAA00000"
-#         }
-#
-#         response = self.client.post(url, data=data)
-#         driver = Driver.objects.get(username="newuser")
-#         self.assertRedirects(
-#             response, reverse("taxi:driver-detail", args=[driver.id])
-#         )
-#         self.assertIn(
-#             driver,
-#             Driver.objects.all()
-#         )
-#
-#     def test_driver_update_license(self):
-#         driver = Driver.objects.create_user(
-#             username="testdriver",
-#             password="12345"
-#         )
-#
-#         url = reverse("taxi:driver-update", args=[driver.id])
-#
-#         data = {
-#             "license_number": "ABC12345"
-#         }
-#
-#         response = self.client.post(url, data=data)
-#
-#         driver.refresh_from_db()
-#
-#         self.assertEqual(driver.license_number, "ABC12345")
-#         self.assertRedirects(response, reverse("taxi:driver-list"))
-#
-#     def test_driver_delete(self):
-#         driver = Driver.objects.create_user(
-#             username="todelete",
-#             password="12345",
-#             license_number="DLT00012"
-#         )
-#
-#         url = reverse("taxi:driver-delete", args=[driver.id])
-#
-#         response = self.client.post(url)
-#
-#         self.assertFalse(Driver.objects.filter(id=driver.id).exists())
-#         self.assertRedirects(response, reverse("taxi:driver-list"))
+
+class LogoutTaskListTest(TestCase):
+
+    def test_login_required(self):
+        login_url = settings.LOGIN_URL
+        response = self.client.get(TASK_URL)
+        self.assertRedirects(response, f"{login_url}?next={TASK_URL}")
+
+
+class LoginTaskListTest(LoginMixin, TestCase):
+    def setUp(self):
+        super().setUp()
+
+        self.task_type = TaskType.objects.create(
+            name="Bug",
+        )
+
+        number_of_task = 7
+        for task_id in range(number_of_task):
+            Task.objects.create(
+                name=f"Fix - {task_id}",
+                task_type=self.task_type,
+                deadline=datetime.now(),
+            )
+#
+    def test_login_task_list_and_pagination(self):
+        response = self.client.get(TASK_URL)
+
+        self.assertEqual(response.status_code, 200)
+
+        self.assertTemplateUsed(response, "task_manager/task_list.html")
+
+        self.assertTrue("is_paginated" in response.context)
+        self.assertTrue(response.context["is_paginated"])
+        self.assertEqual(len(response.context["task_list"]), 2)
+
+        response2 = self.client.get(TASK_URL + "?page=4")
+        self.assertEqual(len(response2.context["task_list"]), 1)
+
+    def test_task_get_context_with_search_form(self):
+        response = self.client.get(TASK_URL + "?name=Fix")
+
+        self.assertIn("search_form", response.context)
+
+        form = response.context["search_form"]
+        self.assertEqual(form.initial["name"], "Fix")
+
+    def test_task_get_queryset_filter(self):
+
+        Task.objects.create(
+            name="Feature",
+            task_type=self.task_type,
+            deadline=datetime.now(),
+        )
+
+        response = self.client.get(TASK_URL + "?name=Fea")
+        qs = response.context["task_list"]
+        name = [c.name for c in qs]
+
+        self.assertEqual(len(qs), 1)
+        self.assertIn("Feature", name)
+
+    def test_toggle_assign_to_task(self):
+
+        worker = Worker.objects.get(pk=self.worker.id)
+        task = Task.objects.get(name="Fix - 0")
+
+        self.assertNotIn(task, worker.assigned_tasks.all())
+        response = self.client.post(
+            reverse("task-manager:toggle-task-assign", args=[worker.id])
+        )
+
+        worker.refresh_from_db()
+        self.assertIn(task, worker.assigned_tasks.all())
+        self.assertRedirects(
+            response,
+            reverse("task-manager:task-detail", args=[task.id])
+        )
+
+
+class LogoutTaskCDUTest(TestCase):
+    def test_login_required(self):
+        login_url = settings.LOGIN_URL
+        response = self.client.get(reverse("task-manager:task-create"))
+        self.assertRedirects(
+            response,
+            f"{login_url}?next={reverse('task-manager:task-create')}"
+        )
+
+
+class LoginTaskCDUTest(LoginMixin, TestCase):
+    def setUp(self):
+        super().setUp()
+
+        self.task_type = TaskType.objects.create(
+            name="Bug",
+        )
+
+    def test_task_create(self):
+
+        create_url = reverse("task-manager:task-create")
+
+        data = {
+            "name": "Fix",
+            "task_type": self.task_type.id,
+            "assignees": self.worker.id,
+            "is_completed": False,
+            "deadline": datetime.now(),
+            "priority": "LW"
+        }
+
+        response = self.client.post(create_url, data=data)
+        if response.status_code != 302:
+            print(response.context['form'].errors)
+        self.assertRedirects(response, TASK_URL)
+
+        task = Task.objects.get(name="Fix")
+        self.assertEqual(task.task_type.name, "Bug")
+
+    def test_task_update(self):
+
+        task = Task.objects.create(
+            name="Feature",
+            task_type=self.task_type,
+            deadline=datetime.now(),
+        )
+
+        data = {
+            "name": "NewFeature",
+            "task_type": self.task_type.id,
+            "assignees": self.worker.id,
+            "is_completed": False,
+            "deadline": datetime.now(),
+            "priority": "LW"
+        }
+
+        update_url = reverse(
+            "task-manager:task-update",
+            args=[task.id]
+        )
+        response = self.client.post(update_url, data=data)
+
+        task.refresh_from_db()
+        self.assertEqual(task.name, "NewFeature")
+        self.assertRedirects(response, TASK_URL)
+
+    def test_task_delete(self):
+        task = Task.objects.create(
+            name="DeleteMe",
+            task_type=self.task_type,
+            deadline=datetime.now(),
+        )
+        delete_url = reverse("task-manager:task-delete", args=[task.id])
+        response = self.client.post(delete_url)
+
+        self.assertEqual(Task.objects.count(), 0)
+        self.assertRedirects(response, TASK_URL)
+
+
+class LogoutWorkerListTest(TestCase):
+    def test_login_required(self):
+        login_url = settings.LOGIN_URL
+        response = self.client.get(reverse("task-manager:worker-list"))
+        self.assertRedirects(
+            response,
+            f"{login_url}?next={reverse('task-manager:worker-list')}"
+        )
+
+
+class LoginWorkerListTest(LoginMixin, TestCase):
+
+    def setUp(self):
+        super().setUp()
+
+        self.position = Position.objects.create(
+            name="Test"
+        )
+
+        for i in range(6):
+            Worker.objects.create_user(
+                username=f"user{i}",
+                password="12345test",
+                position=self.position
+            )
+
+    def test_login_worker_list_and_pagination(self):
+        response = self.client.get(WORKER_URL)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "task_manager/worker_list.html")
+
+        self.assertTrue(response.context["is_paginated"])
+        self.assertEqual(len(response.context["worker_list"]), 2)
+
+        response2 = self.client.get(WORKER_URL + "?page=4")
+        self.assertEqual(len(response2.context["worker_list"]), 1)
+
+    def test_worker_get_context_with_search_form(self):
+        response = self.client.get(WORKER_URL + "?username=adm")
+
+        self.assertIn("search_form", response.context)
+        form = response.context["search_form"]
+        self.assertEqual(form.initial["username"], "adm")
+
+    def test_worker_get_queryset_filter(self):
+
+        response = self.client.get(WORKER_URL + "?username=user1")
+        qs = response.context["worker_list"]
+
+        usernames = [d.username for d in qs]
+
+        self.assertEqual(len(qs), 1)
+        self.assertIn("user1", usernames)
+
+
+class LogoutWorkerCDUTest(TestCase):
+    def test_login_required(self):
+        login_url = settings.LOGIN_URL
+        url = reverse("task-manager:worker-create")
+
+        response = self.client.get(url)
+
+        self.assertRedirects(
+            response,
+            f"{login_url}?next={url}"
+        )
+
+
+class LoginWorkerCDUTest(LoginMixin, TestCase):
+
+    def test_worker_create(self):
+        position = Position.objects.create(
+            name="QA"
+        )
+        url = reverse("task-manager:worker-create")
+
+        data = {
+            "username": "New_user",
+            "password1": "StrongPass123!",
+            "password2": "StrongPass123!",
+            "position": position.id
+        }
+
+        response = self.client.post(url, data=data)
+        worker = Worker.objects.get(username="New_user")
+        self.assertRedirects(
+            response, reverse("task-manager:worker-detail", args=[worker.id])
+        )
+        self.assertIn(
+            worker,
+            Worker.objects.all()
+        )
+
+    def test_worker_update_position(self):
+        position = Position.objects.create(
+            name="PH"
+        )
+        position2 = Position.objects.create(
+            name="QA"
+        )
+
+        worker = Worker.objects.create_user(
+            username="Test_worker",
+            password="12345",
+            position=position
+        )
+
+        url = reverse("task-manager:worker-update", args=[worker.id])
+
+        data = {
+            "position": position2.id
+        }
+
+        response = self.client.post(url, data=data)
+
+        worker.refresh_from_db()
+        self.assertEqual(worker.position.name, "QA")
+        self.assertRedirects(
+            response,
+            reverse("task-manager:worker-detail", args=[worker.id])
+        )
+
+    def test_worker_delete(self):
+        position = Position.objects.create(
+            name="PH"
+        )
+        worker = Worker.objects.create_user(
+            username="Test_worker",
+            password="12345",
+            position=position
+        )
+
+        url = reverse("task-manager:worker-delete", args=[worker.id])
+
+        response = self.client.post(url)
+
+        self.assertFalse(Worker.objects.filter(id=worker.id).exists())
+        self.assertRedirects(response, reverse("task-manager:worker-list"))
