@@ -36,13 +36,13 @@ class TaskForm(forms.ModelForm):
 
     class Meta:
         model = Task
-        exclude = ("is_completed", )
+        fields = "__all__"
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        if self.instance and self.instance.pk:
-            self.fields["is_completed"] = forms.BooleanField(required=False)
+        if not (self.instance and self.instance.pk):
+            del self.fields["is_completed"]
 
 
 class WorkerSearchUsernameForm(forms.Form):
