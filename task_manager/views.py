@@ -17,6 +17,7 @@ from task_manager.forms import (
 )
 from task_manager.models import Worker, Task, TaskType, Position
 
+
 @login_required
 def index(request):
 
@@ -63,7 +64,9 @@ class WorkerListView(LoginRequiredMixin, generic.ListView):
 
 class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
     model = Worker
-    queryset = Worker.objects.all().select_related("position").prefetch_related("assigned_tasks")
+    queryset = Worker.objects.all().select_related(
+        "position"
+    ).prefetch_related("assigned_tasks")
 
 
 class WorkerCreateView(LoginRequiredMixin, generic.CreateView):
@@ -141,7 +144,7 @@ class TaskTypeListView(LoginRequiredMixin, generic.ListView):
 class TaskTypeCreateView(LoginRequiredMixin, generic.CreateView):
     model = TaskType
     fields = "__all__"
-    template_name =  "task_manager/task_type_form.html"
+    template_name = "task_manager/task_type_form.html"
     success_url = reverse_lazy("task-manager:task-type-list")
 
 
@@ -188,4 +191,6 @@ def toggle_assign_to_task(request, pk):
         worker.assigned_tasks.remove(pk)
     else:
         worker.assigned_tasks.add(pk)
-    return HttpResponseRedirect(reverse_lazy("task-manager:task-detail", args=[pk]))
+    return HttpResponseRedirect(
+        reverse_lazy("task-manager:task-detail", args=[pk])
+    )

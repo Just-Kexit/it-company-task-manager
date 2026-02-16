@@ -42,7 +42,7 @@ class TaskFormTest(TestCase):
             name="Bug",
         )
         task = Task.objects.create(
-                name=f"Fix",
+                name="Fix",
                 task_type=task_type,
                 deadline=datetime.now(),
             )
@@ -56,9 +56,7 @@ class TaskFormTest(TestCase):
 class WorkerFormTest(TestCase):
 
     def setUp(self):
-        self.position = Position.objects.create(
-            name = "QA"
-        )
+        self.position = Position.objects.create(name="QA")
 
     def test_field_position_first_last_name(self):
 
@@ -71,7 +69,6 @@ class WorkerFormTest(TestCase):
             "last_name": "Carter"
         }
         form = WorkerCreationForm(data=form_data)
-
 
         self.assertTrue(form.is_valid())
         self.assertEqual(

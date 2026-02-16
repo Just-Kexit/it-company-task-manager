@@ -28,7 +28,7 @@ class ModelTest(TestCase):
 
     def test_task_str(self):
         self.assertEqual(
-            str(self.task),(
+            str(self.task), (
                 f"'{self.task.name}' - deadline: "
                 f"{self.task.deadline.strftime("%d.%m.%Y %H:%M")}, "
                 f"is completed: {self.task.is_completed}, "
@@ -37,22 +37,25 @@ class ModelTest(TestCase):
         )
 
     def test_task_get_status_display_str(self):
-        self.assertEqual(self.task.get_status_display(),"Not completed")
+        self.assertEqual(self.task.get_status_display(), "Not completed")
 
         self.task.is_completed = True
 
-        self.assertEqual(self.task.get_status_display(),"Completed")
+        self.assertEqual(self.task.get_status_display(), "Completed")
 
     def test_worker_str(self):
         self.assertEqual(
             str(self.worker),
-            f"{self.worker.username} ({self.worker.first_name} {self.worker.last_name})"
+            f"{self.worker.username} ({self.worker.first_name} "
+            f"{self.worker.last_name})"
         )
 
     def test_worker_get_absolute_url(self):
         self.assertEqual(
             self.worker.get_absolute_url(),
-            reverse("task-manager:worker-detail", kwargs={"pk": self.worker.pk})
+            reverse(
+                "task-manager:worker-detail", kwargs={"pk": self.worker.pk}
+            )
         )
 
     def test_position_str(self):

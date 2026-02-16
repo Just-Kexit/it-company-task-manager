@@ -26,6 +26,7 @@ class LoginMixin:
         )
         self.client.force_login(self.worker)
 
+
 class LogoutIndexPageTests(TestCase):
 
     def test_login_required(self):
@@ -266,7 +267,7 @@ class LoginTaskListTest(LoginMixin, TestCase):
                 task_type=self.task_type,
                 deadline=datetime.now(),
             )
-#
+
     def test_login_task_list_and_pagination(self):
         response = self.client.get(TASK_URL)
 

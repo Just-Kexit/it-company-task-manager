@@ -31,7 +31,11 @@ class Task(models.Model):
         on_delete=models.CASCADE,
         related_name="tasks"
     )
-    assignees = models.ManyToManyField("Worker", related_name="assigned_tasks", blank=True)
+    assignees = models.ManyToManyField(
+        "Worker",
+        related_name="assigned_tasks",
+        blank=True
+    )
 
     def __str__(self):
         return (
