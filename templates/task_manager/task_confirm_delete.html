@@ -1,12 +1,43 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>Delete task?</h1>
-  <form action="" method="post">
-    {% csrf_token %}
+<div class="container-fluid py-4">
+  <div class="row">
+    <div class="col-lg-6 col-md-8 mx-auto">
+      <div class="card z-index-0 fadeIn3 fadeInBottom">
 
-    <input type="submit" value="Yes" class="btn btn-danger">
-    <a href="{% url 'task-manager:task-detail' pk=task.id %}" class="btn btn-secondary">Cancel</a>
-  </form>
+        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+          <div class="bg-gradient-danger shadow-danger border-radius-lg py-3">
+            <h4 class="text-white font-weight-bolder text-center mt-2 mb-0">Confirm Task Deletion</h4>
+          </div>
+        </div>
 
+        <div class="card-body text-center">
+          <div class="py-4">
+            <i class="material-icons text-danger" style="font-size: 5rem;">delete_forever</i>
+
+            <h5 class="mt-3">Are you sure?</h5>
+            <p class="text-secondary px-4">
+              You are about to permanently delete the task: <br>
+              <strong class="text-dark">"{{ task.name }}"</strong>
+            </p>
+            <p class="text-xs text-uppercase font-weight-bold text-danger">
+              This action cannot be undone.
+            </p>
+          </div>
+
+          <form action="" method="post" class="pb-3">
+            {% csrf_token %}
+            <button type="submit" class="btn bg-gradient-danger mt-4 mb-2 mx-2">
+              <i class="fa fa-trash me-2"></i>Yes, Delete Task
+            </button>
+            <a href="{% url 'task-manager:task-detail' pk=task.id %}" class="btn btn-outline-secondary mt-4 mb-2 mx-2">
+              No, Keep It
+            </a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

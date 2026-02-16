@@ -1,39 +1,87 @@
 {% extends "base.html" %}
-{% load crispy_forms_filters %}
 
 {% block content %}
-    <h1>
-      Task
-      <a href="{% url 'task-manager:task-create' %}" class="btn btn-primary link-to-page">
-        Create
-      </a>
-    </h1>
-    <form action="" method="get" class="form-inline">
-      {{ search_form|crispy }}
-      <input class="btn btn-primary" type="submit" value="Search">
-    </form>
-    <br>
-    {% if task_list %}
-    <table class="table">
-      <tr>
-        <th>ID</th>
-        <th>NAME</th>
-        <th>DEADLINE</th>
-        <th>IS COMPLETED</th>
-        <th>PRIORITY</th>
-      </tr>
-    {% for task in task_list %}
-      <tr>
-        <td>{{ task.id }}</td>
-        <td><a href="{% url 'task_manager:task-detail' pk=task.id %}">{{ task.name }}</a></td>
-        <td>{{ task.deadline }}</td>
-        <td>{{ task.get_status_display }}</td>
-        <td>{{ task.get_priority_display }}</td>
-      </tr>
-    {% endfor %}
+<div class="container-fluid py-4">
+  <div class="row">
+    <div class="col-12">
+      <div class="card my-4">
+        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+          <div class="bg-gradient-dark shadow-dark border-radius-lg pt-4 pb-3 d-flex justify-content-between align-items-center">
+            <h6 class="text-white text-capitalize ps-3 mb-0">Tasks Board</h6>
+            <a href="{% url 'task-manager:task-create' %}" class="btn btn-dark btn-sm me-3 mb-0">
+              <i class="fa fa-plus me-2"></i>New Task
+            </a>
+          </div>
+        </div>
 
-    </table>
-    {% else %}
-      <p>There are no tasks for today.</p>
-    {% endif %}
+        <div class="card-body px-0 pb-2">
+          <div class="px-4 mb-4">
+            <form action="" method="get" class="col-md-5">
+              <div class="input-group input-group-outline {% if request.GET.name %}is-filled{% endif %}">
+                <label class="form-label">Search by task name...</label>
+                {{ search_form.name }}
+                <button class="btn btn-dark mb-0 ms-2" type="submit">Search</button>
+              </div>
+            </form>
+          </div>
+
+          {% if task_list %}
+            <div class="table-responsive p-0">
+              <table class="table align-items-center mb-0">
+                <thead>
+                  <tr>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ID</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Name</th>
+                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Deadline</th>
+                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
+                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Priority</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for task in task_list %}
+                    <tr>
+                      <td class="ps-4">
+                        <p class="text-xs font-weight-bold mb-0">{{ task.id }}</p>
+                      </td>
+                      <td>
+                        <p class="text-xs font-weight-bold mb-0">
+                          <a href="{% url 'task-manager:task-detail' pk=task.id %}" class="text-gradient text-dark text-gradient">
+                            {{ task.name }}
+                          </a>
+                        </p>
+                      </td>
+                      <td class="align-middle text-center">
+                        <span class="text-secondary text-xs font-weight-bold">
+                          <i class="fa fa-calendar me-1"></i> {{ task.deadline|date:"d.m.Y" }}
+                        </span>
+                      </td>
+                      <td class="align-middle text-center text-sm">
+                        {% if task.is_completed %}
+                          <span class="badge badge-sm bg-gradient-success">Done</span>
+                        {% else %}
+                          <span class="badge badge-sm bg-gradient-secondary">In Work</span>
+                        {% endif %}
+                      </td>
+                      <td class="align-middle text-center">
+                        {% if task.priority == 'Urgent' or task.priority == 'High' %}
+                          <span class="text-danger text-xs font-weight-bold">{{ task.get_priority_display }}</span>
+                        {% else %}
+                          <span class="text-info text-xs font-weight-bold">{{ task.get_priority_display }}</span>
+                        {% endif %}
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          {% else %}
+            <div class="text-center py-4">
+              <p class="text-muted">There are no tasks for today. Relax! ☕</p>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

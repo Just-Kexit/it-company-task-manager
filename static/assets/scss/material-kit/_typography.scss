@@ -191,7 +191,7 @@ p {
   position: $text-gradient-position;
   z-index: $text-gradient-zindex;
 
-  &.text-primary {
+  &.text-gradient text-dark {
     background-image: $text-gradient-bg-primary;
   }
   &.text-info {

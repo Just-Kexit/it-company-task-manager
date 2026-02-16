@@ -1,30 +1,62 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>
-      Positions
-      <a href="{% url 'task-manager:position-create' %}" class="btn btn-primary link-to-page">
-        Create
-      </a>
-    </h1>
-    {% if position_list %}
-    <ul class="list-group">
-      {% for position in position_list %}
-      <li class="list-group-item d-flex justify-content-between align-items-center">
-          <span class="font-weight-bold">{{ position.name }}</span>
-
-          <div class="btn-group" role="group">
-            <a href="{% url 'task-manager:position-update' pk=position.id %}"
-               class="btn btn-sm btn-primary custom-tooltip"
-               data-tooltip="Rename">
-              Rename
+<div class="container-fluid py-4">
+  <div class="row">
+    <div class="col-lg-8 col-md-10 mx-auto">
+      <div class="card my-4">
+        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+          <div class="bg-gradient-dark shadow-dark border-radius-lg pt-4 pb-3 d-flex justify-content-between align-items-center">
+            <h6 class="text-white text-capitalize ps-3 mb-0">Worker Positions</h6>
+            <a href="{% url 'task-manager:position-create' %}" class="btn btn-dark btn-sm me-3 mb-0">
+              <i class="fa fa-plus me-2"></i>Add New
             </a>
-            <a href="{% url 'task-manager:position-delete' pk=position.id %}" class="btn btn-sm btn-danger">X</a>
           </div>
-        </li>
-      {% endfor %}
-    </ul>
-    {% else %}
-      <p>We don't have positions.</p>
-    {% endif %}
+        </div>
+
+        <div class="card-body px-0 pb-2">
+          {% if position_list %}
+            <div class="table-responsive p-0">
+              <table class="table align-items-center mb-0">
+                <thead>
+                  <tr>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Position Title</th>
+                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for position in position_list %}
+                    <tr>
+                      <td>
+                        <div class="d-flex px-3 py-1">
+                          <div class="d-flex flex-column justify-content-center">
+                            <h6 class="mb-0 text-sm">{{ position.name }}</h6>
+                          </div>
+                        </div>
+                      </td>
+                      <td class="align-middle text-center">
+                        <a href="{% url 'task-manager:position-update' pk=position.id %}"
+                           class="btn btn-link text-info text-gradient px-3 mb-0">
+                          <i class="fa fa-pencil me-2"></i>Rename
+                        </a>
+                        <a href="{% url 'task-manager:position-delete' pk=position.id %}"
+                           class="btn btn-link text-danger text-gradient px-3 mb-0">
+                          <i class="fa fa-trash me-2"></i>Delete
+                        </a>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          {% else %}
+            <div class="text-center py-4">
+              <p class="text-muted">No positions found. Create one to get started.</p>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

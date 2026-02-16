@@ -1,12 +1,38 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>Delete worker?</h1>
-  <form action="" method="post">
-    {% csrf_token %}
+<div class="container-fluid py-4">
+  <div class="row">
+    <div class="col-lg-6 col-md-8 mx-auto">
+      <div class="card z-index-0 fadeIn3 fadeInBottom">
+        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+          <div class="bg-gradient-danger shadow-danger border-radius-lg py-3 pe-1">
+            <h4 class="text-white font-weight-bolder text-center mt-2 mb-0">Confirm Deletion</h4>
+          </div>
+        </div>
 
-    <input type="submit" value="Yes" class="btn btn-danger">
-    <a href="{% url 'task-manager:worker-detail' pk=worker.id %}" class="btn btn-secondary">Cancel</a>
-  </form>
+        <div class="card-body text-center">
+          <div class="py-4">
+            <i class="material-icons text-danger" style="font-size: 4rem;">warning</i>
+            <h5 class="mt-3">Are you sure?</h5>
+            <p class="text-secondary">
+              You are about to delete worker <strong>{{ worker.username }}</strong>.
+              This action cannot be undone and will affect assigned tasks.
+            </p>
+          </div>
 
+          <form action="" method="post" class="d-inline">
+            {% csrf_token %}
+            <button type="submit" class="btn bg-gradient-danger mt-4 mb-2 mx-2">
+              <i class="fa fa-trash me-2"></i>Yes, Delete
+            </button>
+            <a href="{% url 'task-manager:worker-detail' pk=worker.id %}" class="btn btn-outline-secondary mt-4 mb-2 mx-2">
+              No, Keep it
+            </a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
