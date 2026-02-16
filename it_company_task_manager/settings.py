@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     "debug_toolbar",
     "task_manager",
     "crispy_forms",
-    "crispy_bootstrap4",
+    "crispy_bootstrap5",
 ]
 
 MIDDLEWARE = [
@@ -74,7 +74,7 @@ TEMPLATES = [
     },
 ]
 
-CRISPY_TEMPLATE_PACK = "bootstrap4"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 WSGI_APPLICATION = "it_company_task_manager.wsgi.application"
 
