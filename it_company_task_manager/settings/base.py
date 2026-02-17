@@ -14,13 +14,9 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
-SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY","django-insecure-d#w@fo2e%f^96w$713f7bduzzb0q+7lfbb#--v-7yg)3x&_b#d")
-
-DEBUG = os.environ.get("DJANGO_DEBUG", "") != "False"
-
-ALLOWED_HOSTS = ["127.0.0.1"]
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 INTERNAL_IPS = [
     "127.0.0.1",
@@ -36,9 +32,10 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "debug_toolbar",
-    "task_manager",
     "crispy_forms",
     "crispy_bootstrap5",
+    #user apps
+    "task_manager",
 ]
 
 MIDDLEWARE = [
@@ -72,17 +69,6 @@ TEMPLATES = [
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 WSGI_APPLICATION = "it_company_task_manager.wsgi.application"
-
-
-# Database
-# https://docs.djangoproject.com/en/6.0/ref/settings/#databases
-
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
 
 
 # Password validation
