@@ -16,9 +16,11 @@ from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-load_dotenv(BASE_DIR / ".env")
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY","django-insecure-d#w@fo2e%f^96w$713f7bduzzb0q+7lfbb#--v-7yg)3x&_b#d")
 
-ALLOWED_HOSTS = []
+DEBUG = os.environ.get("DJANGO_DEBUG", "") != "False"
+
+ALLOWED_HOSTS = ["127.0.0.1"]
 
 INTERNAL_IPS = [
     "127.0.0.1",
