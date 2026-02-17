@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+<div class="container-fluid py-4">
+  <div class="row">
+    <div class="col-lg-6 col-md-8 mx-auto">
+      <div class="card z-index-0 fadeIn3 fadeInBottom">
+
+        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+          <div class="bg-gradient-dark shadow-dark border-radius-lg py-3">
+            <h4 class="text-white font-weight-bolder text-center mt-2 mb-0">
+              {{ object|yesno:"Rename, Create New" }} Task Type
+            </h4>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <form action="" method="post" novalidate>
+            {% csrf_token %}
+
+            <div class="input-group-static mb-4">
+              {{ form|crispy }}
+            </div>
+
+            <div class="text-center">
+              <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2">
+                Save Task Type
+              </button>
+              <a href="{% url 'task-manager:task-type-list' %}" class="btn btn-link w-100 text-secondary">
+                Cancel
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Робимо інпути Crispy сумісними з дизайном Material Kit */
+  .form-control {
+    border: 1px solid #d2d6da !important;
+    padding: 0.5rem 0.75rem !important;
+    background-color: transparent !important;
+  }
+  .form-control:focus {
+    border-color: #1a1c23 !important;
+    box-shadow: 0 0 0 2px rgba(52, 71, 103, 0.2) !important;
+  }
+  /* Стиль для лейблів Crispy */
+  label {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+  }
+</style>
+{% endblock %}

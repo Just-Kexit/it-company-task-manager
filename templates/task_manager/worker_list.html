@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid py-4">
+  <div class="row">
+    <div class="col-12">
+      <div class="card my-4">
+        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+          <div class="bg-gradient-dark shadow-dark border-radius-lg pt-4 pb-3 d-flex justify-content-between align-items-center">
+            <h6 class="text-white text-capitalize ps-3 mb-0">Our Beloved Staff</h6>
+            <a href="{% url 'task-manager:worker-create' %}" class="btn btn-dark btn-sm me-3 mb-0">
+              <i class="fa fa-plus me-2"></i>Create
+            </a>
+          </div>
+        </div>
+
+        <div class="card-body px-0 pb-2">
+          <div class="px-4 mb-4">
+            <form action="" method="get" class="col-md-5">
+              <div class="input-group input-group-outline">
+                <label class="form-label">Search by username</label>
+                {{ search_form.username }}
+                <button class="btn btn-dark mb-0" type="submit">Search</button>
+              </div>
+            </form>
+          </div>
+
+          {% if worker_list %}
+            <div class="table-responsive p-0">
+              <table class="table align-items-center mb-0">
+                <thead>
+                  <tr>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ID</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Username</th>
+                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">First Name</th>
+                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Last Name</th>
+                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Position</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for worker in worker_list %}
+                    <tr>
+                      <td>
+                        <p class="text-xs font-weight-bold mb-0 ps-3">{{ worker.id }}</p>
+                      </td>
+                      <td>
+                        <p class="text-xs font-weight-bold mb-0">
+                          <a href="{% url 'task-manager:worker-detail' pk=worker.id %}" class="text-gradient text-dark">
+                            {{ worker.username }}
+                          </a>
+                        </p>
+                      </td>
+                      <td class="align-middle text-center">
+                        <span class="text-secondary text-xs font-weight-bold">{{ worker.first_name }}</span>
+                      </td>
+                      <td class="align-middle text-center">
+                        <span class="text-secondary text-xs font-weight-bold">{{ worker.last_name }}</span>
+                      </td>
+                      <td class="align-middle text-center text-sm">
+                        <span class="badge badge-sm bg-gradient-success">{{ worker.position }}</span>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          {% else %}
+            <div class="text-center py-4">
+              <p class="text-muted">No stars shining yet.</p>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

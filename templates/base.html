@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  {% load static %}
+  <title>Task Manager - {% block title %}{% endblock %}</title>
+
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700" />
+  <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
+  <link id="pagestyle" href="{% static 'assets/css/material-kit.css' %}?v=3.0.0" rel="stylesheet" />
+
+<style>
+    /* Залиш це, бо це відступ контенту від навбара */
+    .content-wrapper {
+        margin-top: 100px;
+    }
+
+    /* Це важливо для гнучкості окремих сторінок */
+    {% block extra_style %}{% endblock %}
+
+    /* Єдине, що я б радив залишити "про всяк випадок" для футера,
+       якщо він досі десь бере старий колір із зовнішніх скриптів */
+    footer a:hover,
+    .footer a:hover {
+        color: #000000 !important;
+        text-decoration: underline !important;
+    }
+
+    /* Якщо в полях вводу при фокусі досі вискакує рожева лінія */
+    .form-control:focus {
+        border-color: #1a1c23 !important;
+        box-shadow: 0 0 0 2px rgba(26, 28, 35, 0.2) !important;
+    }
+</style>
+</head>
+
+<body class="bg-gray-200">
+
+  <div class="container position-sticky z-index-sticky top-0">
+    <div class="row">
+      <div class="col-12">
+        {% include 'includes/navigation.html' %}
+      </div>
+    </div>
+  </div>
+
+  <main class="content-wrapper">
+    <div class="container-fluid py-4">
+      {% block content %}{% endblock %}
+      <div class="row mt-4">
+        <div class="col-12 d-flex justify-content-center">
+          {% block pagination %}
+            {% include "includes/pagination.html" %}
+          {% endblock %}
+        </div>
+      </div>
+    </div>
+  </main>
+
+  {% include 'includes/footer.html' %}
+  {% include 'includes/scripts.html' %}
+  {% block javascripts %}{% endblock %}
+</body>
+</html>
